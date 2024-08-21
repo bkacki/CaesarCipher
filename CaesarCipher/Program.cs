@@ -4,12 +4,58 @@
     {
         static void Main(string[] args)
         {
-            CaesarCipher cipher = new CaesarCipher();
+            Console.WriteLine(@"
+  ____                              ____ _       _               
+ / ___|__ _  ___  ___  __ _ _ __   / ___(_)_ __ | |__   ___ _ __ 
+| |   / _` |/ _ \/ __|/ _` | '__| | |   | | '_ \| '_ \ / _ \ '__|
+| |__| (_| |  __/\__ \ (_| | |    | |___| | |_) | | | |  __/ |   
+ \____\__,_|\___||___/\__,_|_|     \____|_| .__/|_| |_|\___|_|   
+                                          |_|                    
+");
 
-            cipher.Message = "Lorem ipsum";
-            cipher.Shift = 7;
-            cipher.Encode();
-            Console.WriteLine(cipher.EncodedMessage);
+            while (true)
+            {
+                Console.Write("Message: ");
+                var message = Console.ReadLine();
+                while (message == string.Empty)
+                {
+                    Console.Write("Message can't be empty, enter message: ");
+                    message = Console.ReadLine();
+                }
+                Console.Write("Enter shift: ");
+                int shift;
+                while (!int.TryParse(Console.ReadLine(), out shift))
+                    Console.Write("Enter integer number: ");
+
+                var encodedMessage = string.Empty;
+                Console.Write("[E]ncode or [D]ecode: ");
+                do
+                {
+                    switch (Console.ReadKey().KeyChar.ToString().ToUpper())
+                    {
+                        case "E":
+                            encodedMessage = CaesarCipher.Encode(message, shift); break;
+                        case "D":
+                            encodedMessage = CaesarCipher.Decode(message, shift); break;
+                        default:
+                            Console.Write("\n[E]ncode or [D]ecode: "); break;
+
+                    }
+                } while (encodedMessage == string.Empty);
+
+                Console.WriteLine($"\nEncoded message: {encodedMessage}");
+
+                Console.Write("Enter to continue, Esc to quit: ");
+                ConsoleKey keyChar = Console.ReadKey(true).Key;
+                while(keyChar != ConsoleKey.Enter && keyChar != ConsoleKey.Escape)
+                {
+                    Console.Write("\nEnter to continue, Esc to quit: ");
+                    keyChar = Console.ReadKey(true).Key;
+                }
+                if (keyChar == ConsoleKey.Escape)
+                    return;
+                Console.WriteLine(); Console.WriteLine();
+            }
         }
     }
 }
