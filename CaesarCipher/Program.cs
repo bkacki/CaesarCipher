@@ -34,16 +34,17 @@
                     switch (Console.ReadKey().KeyChar.ToString().ToUpper())
                     {
                         case "E":
-                            encodedMessage = CaesarCipher.Encode(message, shift); break;
+                            encodedMessage = CaesarCipher.Encode(message, shift);
+                            Console.WriteLine($"\nEncoded message: {encodedMessage}"); 
+                            break;
                         case "D":
-                            encodedMessage = CaesarCipher.Decode(message, shift); break;
+                            encodedMessage = CaesarCipher.Decode(message, shift);
+                            Console.WriteLine($"\nDecoded message: {encodedMessage}"); 
+                            break;
                         default:
                             Console.Write("\n[E]ncode or [D]ecode: "); break;
-
                     }
                 } while (encodedMessage == string.Empty);
-
-                Console.WriteLine($"\nEncoded message: {encodedMessage}");
 
                 Console.Write("Enter to continue, Esc to quit: ");
                 ConsoleKey keyChar = Console.ReadKey(true).Key;
