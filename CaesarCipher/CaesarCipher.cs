@@ -11,11 +11,11 @@ namespace CaesarCipher
         public static string Message { get; set; }
         public static string EncodedMessage { get; private set; }
 
-        private static int shift;
+        private static int _shift;
         public static int Shift
         {
-            get => shift;
-            set => shift = value>26 ? value%26 : value;
+            get => _shift;
+            set => _shift = value>26 ? value%26 : value;
         }
 
         private const int lowerCaseConst = 97;
@@ -30,9 +30,9 @@ namespace CaesarCipher
             for (int i = 0; i < charArray.Length; i++)
             {
                 if ((byte)charArray[i] >= 97 && (byte)charArray[i] <= 122)
-                    encodedCharArray[i] = (char)(lowerCaseConst + ((byte)charArray[i] - lowerCaseConst + shift) % 26);
+                    encodedCharArray[i] = (char)(lowerCaseConst + ((byte)charArray[i] - lowerCaseConst + _shift + 26) % 26);
                 else if ((byte)charArray[i] >= 65 && (byte)charArray[i] <= 90)
-                    encodedCharArray[i] = (char)(capitalLetterConst + ((byte)charArray[i] - capitalLetterConst + shift) % 26);
+                    encodedCharArray[i] = (char)(capitalLetterConst + ((byte)charArray[i] - capitalLetterConst + _shift + 26) % 26);
                 else if ((byte)charArray[i] >= 32 && (byte)charArray[i] <= 64)
                     encodedCharArray[i] = charArray[i];
                 else if ((byte)charArray[i] >= 91 && (byte)charArray[i] <= 96)
@@ -54,10 +54,10 @@ namespace CaesarCipher
 
             for (int i = 0; i < charArray.Length; i++)
             {
-                if ((byte)charArray[i] >= 97 && (byte)charArray[i] <= 122)
-                    encodedCharArray[i] = (char)(lowerCaseConst + ((byte)charArray[i] - lowerCaseConst - shift + 26) % 26);
-                else if ((byte)charArray[i] >= 65 && (byte)charArray[i] <= 90)
-                    encodedCharArray[i] = (char)(capitalLetterConst + ((byte)charArray[i] - capitalLetterConst - shift + 26) % 26);
+                if (IsLowerCaseLetter(charArray[i]))
+                    encodedCharArray[i] = (char)(lowerCaseConst + ((byte)charArray[i] - lowerCaseConst - _shift + 26) % 26);
+                else if (IsCapitalLetter(charArray[i]))
+                    encodedCharArray[i] = (char)(capitalLetterConst + ((byte)charArray[i] - capitalLetterConst - _shift + 26) % 26);
                 else if ((byte)charArray[i] >= 32 && (byte)charArray[i] <= 64)
                     encodedCharArray[i] = charArray[i];
                 else if ((byte)charArray[i] >= 91 && (byte)charArray[i] <= 96)
@@ -70,5 +70,8 @@ namespace CaesarCipher
             EncodedMessage = new string(encodedCharArray);
             return EncodedMessage;
         }
+
+        private static bool IsCapitalLetter(char c) => (c >= 'A' && c <= 'Z');
+        private static bool IsLowerCaseLetter(char c) => (c >= 'a' && c <= 'z');
     }
 }
